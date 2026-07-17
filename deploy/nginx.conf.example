@@ -1,0 +1,25 @@
+# Referencia — instalar a mano en el VPS como /etc/nginx/sites-available/admin-pos.bekadev.online
+# y habilitar con: ln -s ../sites-available/admin-pos.bekadev.online /etc/nginx/sites-enabled/
+#
+# El deploy.yml de este repo solo hace rsync de dist/ al webroot — no toca
+# Nginx ni certificados, eso es aprovisionamiento único hecho a mano (ver
+# DEPLOY.md).
+
+server {
+    listen 80;
+    server_name admin-pos.bekadev.online;
+
+    root /var/www/admin-pos.bekadev.online;
+    index index.html;
+
+    # SPA con react-router en modo BrowserRouter: cualquier ruta que no sea
+    # un archivo real cae a index.html, React Router resuelve del lado
+    # del cliente (evita 404 al refrescar /businesses/123, por ejemplo).
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+# Tras el primer `certbot --nginx -d admin-pos.bekadev.online`, certbot
+# reescribe este bloque agregando `listen 443 ssl;` + certificados y un
+# bloque adicional que redirige 80 -> 443. No hace falta escribir eso a mano.

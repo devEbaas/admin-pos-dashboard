@@ -1,0 +1,52 @@
+name: Deploy Dashboard
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-dashboard
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # VITE_API_URL se hornea en el build (Vite resuelve import.meta.env en
+      # build time, no en runtime) — a diferencia del backend, aquí no hay
+      # un .env que se escriba después en el servidor.
+      - name: Build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+        run: npm run build
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      # Sitio estático puro — se sincroniza dist/ al webroot que sirve Nginx
+      # para admin-pos.bekadev.online (ver deploy/nginx.conf.example). Sin
+      # pm2 ni reinicio de proceso: Nginx sirve los archivos directo.
+      - name: Sync build output
+        run: |
+          rsync -az --delete \
+            dist/ \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin-pos.bekadev.online/
