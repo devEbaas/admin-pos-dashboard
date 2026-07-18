@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function LoginView() {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,10 +17,14 @@ export default function LoginView() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!identifier || !password) {
+      setError("Ingresa tu correo y contraseña.");
+      return;
+    }
     setError("");
     setLoading(true);
     try {
-      await login(username, password);
+      await login(identifier, password);
       navigate("/businesses");
     } catch (err) {
       setError(err.message);
@@ -30,59 +34,62 @@ export default function LoginView() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-50 dark:bg-gray-900">
+    <div
+      className="flex items-center justify-center min-h-screen w-full p-6 animate-[fadeIn_0.4s_ease]"
+      style={{
+        background:
+          "radial-gradient(circle at 30% 20%, oklch(0.19 0.02 255), oklch(0.13 0.01 260) 60%)",
+      }}
+    >
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm p-6 bg-white rounded-lg shadow-sm dark:bg-gray-800"
+        className="w-full max-w-[380px] bg-surface border border-border-strong rounded-2xl px-8 py-9 animate-[scaleIn_0.35s_ease]"
       >
-        <h1 className="mb-1 text-xl font-bold text-gray-900 dark:text-white">
-          pos-root-dashboard
+        <div className="flex items-center justify-center w-14 h-14 mx-auto mb-5 font-mono text-[9px] leading-tight text-center text-text-muted border border-dashed rounded-xl border-border-strong">
+          LOGO
+        </div>
+        <h1 className="text-center text-[22px] font-bold tracking-tight text-text-primary">
+          Absolute POS
         </h1>
-        <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-          Inicia sesión con tu cuenta de platform admin
+        <p className="mt-1 mb-7 text-center text-[13px] text-text-muted">
+          Panel administrativo
         </p>
 
-        {error && (
-          <div className="px-3 py-2 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-red-900/30 dark:text-red-300">
-            {error}
-          </div>
-        )}
-
-        <div className="space-y-3">
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Usuario
-            </label>
+        <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-text-secondary">Correo</label>
             <input
               type="text"
               required
               autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              placeholder="admin@absolutepos.com"
+              className="px-3 py-2.5 text-sm rounded-lg bg-surface-2 border border-border-strong text-text-primary outline-none focus:border-accent"
             />
           </div>
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Contraseña
-            </label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-text-secondary">Contraseña</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="••••••••"
+              className="px-3 py-2.5 text-sm rounded-lg bg-surface-2 border border-border-strong text-text-primary outline-none focus:border-accent"
             />
           </div>
-        </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-2.5 mt-5 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Ingresando..." : "Ingresar"}
-        </button>
+          {error && <div className="text-[12.5px] text-danger">{error}</div>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-2 py-3 text-sm font-bold rounded-lg bg-accent text-bg hover:bg-accent-hover active:scale-[0.98] transition-all disabled:opacity-50"
+          >
+            {loading ? "Ingresando..." : "Ingresar"}
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { NewBusinessModal } from "./components/NewBusinessModal";
 
 export default function BusinessesListView() {
   const { call } = useAuth();
+  const navigate = useNavigate();
   const [businesses, setBusinesses] = useState(null);
   const [error, setError] = useState("");
   const [showNewModal, setShowNewModal] = useState(false);
@@ -22,70 +23,65 @@ export default function BusinessesListView() {
     load();
   }, [load]);
 
-  const handleCreated = (business) => {
+  const handleCreated = () => {
     setShowNewModal(false);
-    setBusinesses((prev) => (prev ? [business, ...prev] : [business]));
+    load();
   };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">Negocios</h1>
+        <div>
+          <div className="text-2xl font-bold tracking-tight text-text-primary">Clientes</div>
+          <div className="mt-1 text-[13.5px] text-text-muted">
+            Tiendas registradas en Absolute POS
+          </div>
+        </div>
         <button
           onClick={() => setShowNewModal(true)}
-          className="px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+          className="px-[18px] py-2.5 text-[13.5px] font-bold rounded-[9px] bg-accent text-bg hover:bg-accent-hover active:scale-[0.97] transition-all"
         >
-          + Nuevo negocio
+          + Nueva tienda
         </button>
       </div>
 
-      {error && (
-        <div className="px-3 py-2 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-red-900/30 dark:text-red-300">
-          {error}
-        </div>
-      )}
+      {error && <div className="mb-4 text-[13px] text-danger">{error}</div>}
 
       {businesses === null && !error && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Cargando...</p>
+        <p className="text-sm text-text-muted">Cargando...</p>
       )}
 
       {businesses?.length === 0 && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Todavía no hay negocios registrados.
-        </p>
+        <p className="text-sm text-text-muted">Todavía no hay negocios registrados.</p>
       )}
 
       {businesses?.length > 0 && (
-        <div className="overflow-hidden bg-white rounded-lg shadow-sm dark:bg-gray-800">
-          <table className="w-full text-sm">
-            <thead className="text-left border-b border-gray-200 dark:border-gray-700">
-              <tr className="text-gray-500 dark:text-gray-400">
-                <th className="px-4 py-3 font-medium">Nombre</th>
-                <th className="px-4 py-3 font-medium">Slug</th>
-                <th className="px-4 py-3 font-medium">Creado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-              {businesses.map((b) => (
-                <tr key={b.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-4 py-3">
-                    <Link
-                      to={`/businesses/${b.id}`}
-                      className="font-medium text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      {b.name}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-gray-600 dark:text-gray-400">
-                    {b.slug}
-                  </td>
-                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
-                    {new Date(b.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}>
+          {businesses.map((b) => (
+            <div
+              key={b.id}
+              onClick={() => navigate(`/businesses/${b.id}`)}
+              className="p-5 transition-all border cursor-pointer rounded-2xl bg-surface border-border hover:border-accent hover:-translate-y-0.5 animate-[slideUp_0.3s_ease]"
+            >
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="text-[16px] font-bold text-text-primary">{b.name}</div>
+                <div className="font-mono text-[10.5px] text-text-muted bg-surface-2 px-1.5 py-0.5 rounded">
+                  {b.id.slice(0, 8)}
+                </div>
+              </div>
+              <div className="font-mono text-[12.5px] text-accent-text mb-3.5">/{b.slug}</div>
+              <div className="flex gap-4 pt-3.5 border-t border-border-soft">
+                <div>
+                  <div className="text-[15px] font-bold text-text-primary">{b.userCount}</div>
+                  <div className="text-[11px] text-text-muted">Usuarios</div>
+                </div>
+                <div>
+                  <div className="text-[15px] font-bold text-success">{b.activeLicenseCount}</div>
+                  <div className="text-[11px] text-text-muted">Licencias activas</div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

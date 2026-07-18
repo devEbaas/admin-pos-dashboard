@@ -30,10 +30,10 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("platformAdmin");
   }, []);
 
-  const login = useCallback(async (username, password) => {
+  const login = useCallback(async (identifier, password) => {
     const data = await apiFetch("/platform-admin/login", {
       method: "POST",
-      body: { username, password },
+      body: { identifier, password },
     });
     setToken(data.token);
     setAdmin(data.admin);

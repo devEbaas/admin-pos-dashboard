@@ -3,7 +3,9 @@
 Panel de administración (Vite + React, SPA estática) para
 [`backend-absolute-pos`](../backend-absolute-pos): dar de alta negocios, generar pairing
 codes y administrar dispositivos (varias PCs y celulares por negocio) sin usar curls
-manuales con la master key.
+manuales con la master key. Diseño basado en un mockup importado de claude.ai/design —
+ver [`FEATURES.md`](./FEATURES.md) para el detalle de qué hace cada sección (alta de
+cliente con admin inicial, agregar usuarios, ver/revocar licencias, métricas globales).
 
 ## Desarrollo local
 
