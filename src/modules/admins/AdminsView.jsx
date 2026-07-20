@@ -52,26 +52,28 @@ export default function AdminsView() {
           {error && <div className="mb-3 text-xs text-danger">{error}</div>}
 
           <div className="overflow-hidden border rounded-2xl bg-surface border-border">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="border-b border-border-soft">
-                  {["Nombre", "Usuario", "Correo"].map((h) => (
-                    <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {admins?.map((a) => (
-                  <tr key={a.id} className="border-b border-border-soft last:border-0">
-                    <td className="px-5 py-3.5 text-text-primary">{a.name}</td>
-                    <td className="px-5 py-3.5 font-mono text-[13px] text-text-secondary">{a.username}</td>
-                    <td className="px-5 py-3.5 text-[13px] text-text-muted">{a.email || "—"}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="border-b border-border-soft">
+                    {["Nombre", "Usuario", "Correo"].map((h) => (
+                      <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted whitespace-nowrap">
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {admins?.map((a) => (
+                    <tr key={a.id} className="border-b border-border-soft last:border-0">
+                      <td className="px-5 py-3.5 text-text-primary whitespace-nowrap">{a.name}</td>
+                      <td className="px-5 py-3.5 font-mono text-[13px] text-text-secondary whitespace-nowrap">{a.username}</td>
+                      <td className="px-5 py-3.5 text-[13px] text-text-muted whitespace-nowrap">{a.email || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

@@ -72,7 +72,7 @@ export function NewBusinessModal({ onClose, onCreated }) {
         <form
           onSubmit={handleSubmit}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-[440px] bg-surface border border-border-strong rounded-2xl p-7 animate-[scaleIn_0.25s_ease]"
+          className="w-full max-w-[440px] max-h-[90vh] overflow-y-auto bg-surface border border-border-strong rounded-2xl p-6 sm:p-7 animate-[scaleIn_0.25s_ease]"
         >
           <div className="mb-1 text-[17px] font-bold text-text-primary">Nueva tienda</div>
           <div className="mb-5 text-[12.5px] text-text-muted">
@@ -148,7 +148,7 @@ export function NewBusinessModal({ onClose, onCreated }) {
       {created && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-[400px] bg-surface border border-border-strong rounded-2xl p-7 text-center animate-[scaleIn_0.25s_ease]"
+          className="w-full max-w-[400px] max-h-[90vh] overflow-y-auto bg-surface border border-border-strong rounded-2xl p-6 sm:p-7 text-center animate-[scaleIn_0.25s_ease]"
         >
           <div className="mb-1 text-[17px] font-bold text-text-primary">
             {created.business.name} creada

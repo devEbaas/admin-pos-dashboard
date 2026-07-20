@@ -45,44 +45,46 @@ export function LicensesTab({ businessId, devices, onChanged }) {
             Sin licencias todavía.
           </div>
         ) : (
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-border-soft">
-                {["Dispositivo", "Activada", "Últ. conexión", "Estado", ""].map((h) => (
-                  <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {devices.map((d) => (
-                <tr key={d.id} className="border-b border-border-soft last:border-0">
-                  <td className="px-5 py-3.5 text-[13.5px] text-text-primary">
-                    {d.platform === "mobile" ? "📱" : "🖥"} {d.label}
-                  </td>
-                  <td className="px-5 py-3.5 text-xs text-text-muted">{relativeTime(d.createdAt)}</td>
-                  <td className="px-5 py-3.5 text-xs text-text-muted">{relativeTime(d.lastSeenAt)}</td>
-                  <td className="px-5 py-3.5">
-                    <Badge variant={d.revokedAt ? "danger" : "success"}>
-                      {d.revokedAt ? "Revocada" : "Activa"}
-                    </Badge>
-                  </td>
-                  <td className="px-5 py-3.5 text-right">
-                    {!d.revokedAt && (
-                      <button
-                        onClick={() => handleRevoke(d)}
-                        disabled={revokingId === d.id}
-                        className="px-3.5 py-1.5 text-xs font-semibold rounded-md bg-danger-soft text-danger hover:brightness-125 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {revokingId === d.id ? "Revocando..." : "Revocar"}
-                      </button>
-                    )}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border-soft">
+                  {["Dispositivo", "Activada", "Últ. conexión", "Estado", ""].map((h) => (
+                    <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted whitespace-nowrap">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {devices.map((d) => (
+                  <tr key={d.id} className="border-b border-border-soft last:border-0">
+                    <td className="px-5 py-3.5 text-[13.5px] text-text-primary whitespace-nowrap">
+                      {d.platform === "mobile" ? "📱" : "🖥"} {d.label}
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-text-muted whitespace-nowrap">{relativeTime(d.createdAt)}</td>
+                    <td className="px-5 py-3.5 text-xs text-text-muted whitespace-nowrap">{relativeTime(d.lastSeenAt)}</td>
+                    <td className="px-5 py-3.5">
+                      <Badge variant={d.revokedAt ? "danger" : "success"}>
+                        {d.revokedAt ? "Revocada" : "Activa"}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      {!d.revokedAt && (
+                        <button
+                          onClick={() => handleRevoke(d)}
+                          disabled={revokingId === d.id}
+                          className="px-3.5 py-1.5 text-xs font-semibold rounded-md bg-danger-soft text-danger hover:brightness-125 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                        >
+                          {revokingId === d.id ? "Revocando..." : "Revocar"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

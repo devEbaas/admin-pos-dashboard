@@ -29,38 +29,40 @@ export function UsersTab({ businessId, users, onChanged }) {
             Sin usuarios todavía.
           </div>
         ) : (
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-border-soft">
-                {["Nombre", "Contacto", "Rol", "Estado"].map((h) => (
-                  <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id} className="border-b border-border-soft last:border-0">
-                  <td className="px-5 py-3.5 text-[13.5px] font-semibold text-text-primary">{u.name}</td>
-                  <td className="px-5 py-3.5">
-                    <div className="text-[12.5px] text-text-secondary">{u.email || u.username}</div>
-                    {u.phone && <div className="text-[11.5px] text-text-muted">{u.phone}</div>}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <Badge variant={u.role === "admin" ? "accent" : "neutral"}>
-                      {u.role === "admin" ? "Admin" : "Cajero"}
-                    </Badge>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <Badge variant={u.active ? "success" : "neutral"}>
-                      {u.active ? "Activo" : "Inactivo"}
-                    </Badge>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border-soft">
+                  {["Nombre", "Contacto", "Rol", "Estado"].map((h) => (
+                    <th key={h} className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted whitespace-nowrap">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id} className="border-b border-border-soft last:border-0">
+                    <td className="px-5 py-3.5 text-[13.5px] font-semibold text-text-primary whitespace-nowrap">{u.name}</td>
+                    <td className="px-5 py-3.5">
+                      <div className="text-[12.5px] text-text-secondary whitespace-nowrap">{u.email || u.username}</div>
+                      {u.phone && <div className="text-[11.5px] text-text-muted whitespace-nowrap">{u.phone}</div>}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <Badge variant={u.role === "admin" ? "accent" : "neutral"}>
+                        {u.role === "admin" ? "Admin" : "Cajero"}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <Badge variant={u.active ? "success" : "neutral"}>
+                        {u.active ? "Activo" : "Inactivo"}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

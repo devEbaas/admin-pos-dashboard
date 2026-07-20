@@ -79,7 +79,7 @@ export function PairingTab({ business, pairingCodes, onGenerated }) {
   const remainingMs = current ? new Date(current.expiresAt).getTime() - now : 0;
 
   return (
-    <div className="grid gap-6 items-start" style={{ gridTemplateColumns: "320px 1fr" }}>
+    <div className="grid items-start grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
       <div className="p-[22px] bg-surface border border-border rounded-2xl animate-[slideUp_0.25s_ease]">
         <div className="mb-3.5 text-sm font-bold text-text-primary">Generar código</div>
         <div className="mb-2 text-xs text-text-muted">Tipo de dispositivo</div>
@@ -136,25 +136,27 @@ export function PairingTab({ business, pairingCodes, onGenerated }) {
             Aún no se han generado códigos.
           </div>
         ) : (
-          <table className="w-full text-sm border-collapse">
-            <tbody>
-              {pairingCodes.map((row) => {
-                const status = codeStatus(row);
-                return (
-                  <tr key={row.id} className="border-b border-border-soft last:border-0">
-                    <td className="px-5 py-3 font-mono text-[13px] text-text-primary">{row.code}</td>
-                    <td className="px-5 py-3 text-[12.5px] text-text-secondary">
-                      {row.platform === "mobile" ? "📱 Móvil" : "🖥 Escritorio"}
-                    </td>
-                    <td className="px-5 py-3 text-xs text-text-muted">{relativeTime(row.createdAt)}</td>
-                    <td className="px-5 py-3">
-                      <Badge variant={status.variant}>{status.label}</Badge>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <tbody>
+                {pairingCodes.map((row) => {
+                  const status = codeStatus(row);
+                  return (
+                    <tr key={row.id} className="border-b border-border-soft last:border-0">
+                      <td className="px-5 py-3 font-mono text-[13px] text-text-primary whitespace-nowrap">{row.code}</td>
+                      <td className="px-5 py-3 text-[12.5px] text-text-secondary whitespace-nowrap">
+                        {row.platform === "mobile" ? "📱 Móvil" : "🖥 Escritorio"}
+                      </td>
+                      <td className="px-5 py-3 text-xs text-text-muted whitespace-nowrap">{relativeTime(row.createdAt)}</td>
+                      <td className="px-5 py-3">
+                        <Badge variant={status.variant}>{status.label}</Badge>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

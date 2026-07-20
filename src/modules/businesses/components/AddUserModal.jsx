@@ -60,7 +60,7 @@ export function AddUserModal({ businessId, onClose, onCreated }) {
         <form
           onSubmit={handleSubmit}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-[400px] bg-surface border border-border-strong rounded-2xl p-7 animate-[scaleIn_0.25s_ease]"
+          className="w-full max-w-[400px] max-h-[90vh] overflow-y-auto bg-surface border border-border-strong rounded-2xl p-6 sm:p-7 animate-[scaleIn_0.25s_ease]"
         >
           <div className="mb-[18px] text-[17px] font-bold text-text-primary">Agregar usuario</div>
 
@@ -122,7 +122,7 @@ export function AddUserModal({ businessId, onClose, onCreated }) {
       {created && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-[400px] bg-surface border border-border-strong rounded-2xl p-7 text-center animate-[scaleIn_0.25s_ease]"
+          className="w-full max-w-[400px] max-h-[90vh] overflow-y-auto bg-surface border border-border-strong rounded-2xl p-6 sm:p-7 text-center animate-[scaleIn_0.25s_ease]"
         >
           <div className="mb-1 text-[17px] font-bold text-text-primary">Usuario agregado</div>
           <div className="mb-5 text-[12.5px] text-text-muted">

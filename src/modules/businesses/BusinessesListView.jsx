@@ -30,7 +30,7 @@ export default function BusinessesListView() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center">
         <div>
           <div className="text-2xl font-bold tracking-tight text-text-primary">Clientes</div>
           <div className="mt-1 text-[13.5px] text-text-muted">
@@ -39,7 +39,7 @@ export default function BusinessesListView() {
         </div>
         <button
           onClick={() => setShowNewModal(true)}
-          className="px-[18px] py-2.5 text-[13.5px] font-bold rounded-[9px] bg-accent text-bg hover:bg-accent-hover active:scale-[0.97] transition-all"
+          className="flex-shrink-0 px-[18px] py-2.5 text-[13.5px] font-bold rounded-[9px] bg-accent text-bg hover:bg-accent-hover active:scale-[0.97] transition-all"
         >
           + Nueva tienda
         </button>

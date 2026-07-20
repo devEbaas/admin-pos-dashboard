@@ -67,12 +67,12 @@ export default function BusinessDetailView() {
 
       {error && <div className="mb-4 text-[13px] text-danger">{error}</div>}
 
-      <div className="flex gap-1.5 mb-6 border-b border-border-soft">
+      <div className="flex gap-1.5 mb-6 overflow-x-auto border-b border-border-soft">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`bg-transparent border-none px-4 py-2.5 text-[13.5px] font-semibold cursor-pointer border-b-2 -mb-px transition-colors ${
+            className={`bg-transparent border-none px-4 py-2.5 text-[13.5px] font-semibold cursor-pointer border-b-2 -mb-px transition-colors whitespace-nowrap ${
               tab === t.key ? "text-text-primary border-accent" : "text-text-muted border-transparent"
             }`}
           >
