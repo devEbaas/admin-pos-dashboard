@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 const NAV_ITEMS = [
   { to: "/businesses", label: "Clientes" },
   { to: "/license-requests", label: "Solicitudes de licencia" },
+  { to: "/demo-requests", label: "Solicitudes de demo" },
   { to: "/metrics", label: "Métricas" },
   { to: "/settings", label: "Configuración" },
   { to: "/admins", label: "Administradores" },

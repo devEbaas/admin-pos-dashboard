@@ -10,6 +10,7 @@ import LoginView from "./modules/auth/LoginView";
 import BusinessesListView from "./modules/businesses/BusinessesListView";
 import BusinessDetailView from "./modules/businesses/BusinessDetailView";
 import LicenseRequestsListView from "./modules/license-requests/LicenseRequestsListView";
+import DemoRequestsListView from "./modules/demo-requests/DemoRequestsListView";
 import AdminsView from "./modules/admins/AdminsView";
 import MetricsView from "./modules/metrics/MetricsView";
 import SettingsView from "./modules/settings/SettingsView";
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/businesses" element={<BusinessesListView />} />
             <Route path="/businesses/:id" element={<BusinessDetailView />} />
             <Route path="/license-requests" element={<LicenseRequestsListView />} />
+            <Route path="/demo-requests" element={<DemoRequestsListView />} />
             <Route path="/admins" element={<AdminsView />} />
             <Route path="/metrics" element={<MetricsView />} />
             <Route path="/settings" element={<SettingsView />} />
