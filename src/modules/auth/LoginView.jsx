@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logoIcon from "../../assets/logo-icon.png";
 
 export default function LoginView() {
   const { isAuthenticated, login } = useAuth();
@@ -45,9 +46,7 @@ export default function LoginView() {
         onSubmit={handleSubmit}
         className="w-full max-w-[380px] bg-surface border border-border-strong rounded-2xl px-8 py-9 animate-[scaleIn_0.35s_ease]"
       >
-        <div className="flex items-center justify-center w-14 h-14 mx-auto mb-5 font-mono text-[9px] leading-tight text-center text-text-muted border border-dashed rounded-xl border-border-strong">
-          LOGO
-        </div>
+        <img src={logoIcon} alt="" width={56} height={56} className="w-14 h-14 mx-auto mb-5" />
         <h1 className="text-center text-[22px] font-bold tracking-tight text-text-primary">
           Absolute POS
         </h1>

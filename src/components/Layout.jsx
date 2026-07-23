@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import logoIcon from "../assets/logo-icon.png";
 
 const NAV_ITEMS = [
   { to: "/businesses", label: "Clientes" },
@@ -69,9 +70,7 @@ export function Layout() {
       >
         <div className="flex items-center justify-between px-1.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center flex-shrink-0 w-9 h-9 font-mono text-[7px] text-text-muted border border-dashed rounded-[9px] border-border-strong">
-              LOGO
-            </div>
+            <img src={logoIcon} alt="" width={36} height={36} className="flex-shrink-0 w-9 h-9" />
             <div>
               <div className="text-[14.5px] font-bold leading-tight text-text-primary">
                 Absolute POS
