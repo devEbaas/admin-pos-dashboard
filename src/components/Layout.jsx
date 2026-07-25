@@ -7,6 +7,7 @@ import logoIcon from "../assets/logo-icon.png";
 const NAV_ITEMS = [
   { to: "/businesses", label: "Clientes" },
   { to: "/license-requests", label: "Solicitudes de licencia" },
+  { to: "/generate-license", label: "Generar licencia manual" },
   { to: "/demo-requests", label: "Solicitudes de demo" },
   { to: "/metrics", label: "Métricas" },
   { to: "/settings", label: "Configuración" },
