@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { to: "/businesses", label: "Clientes" },
   { to: "/license-requests", label: "Solicitudes de licencia" },
   { to: "/offline-license-requests", label: "Licencias offline" },
+  { to: "/generate-license", label: "Generar licencia manual" },
   { to: "/demo-requests", label: "Solicitudes de demo" },
   { to: "/metrics", label: "Métricas" },
   { to: "/settings", label: "Configuración" },
@@ -41,7 +42,7 @@ export function Layout() {
   return (
     <div className="flex min-h-screen w-full bg-bg animate-[fadeIn_0.35s_ease]">
       {/* Topbar — solo visible por debajo de `lg`, donde el sidebar pasa a ser un drawer */}
-      <header className="fixed inset-x-0 top-0 z-30 flex items-center justify-between h-14 px-4 border-b lg:hidden bg-sidebar border-border-soft">
+      <header className="fixed inset-x-0 top-0 z-30 flex items-center justify-between px-4 border-b h-14 lg:hidden bg-sidebar border-border-soft">
         <button
           onClick={() => setMobileOpen(true)}
           aria-label="Abrir menú"
@@ -120,7 +121,7 @@ export function Layout() {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 px-4 pt-20 pb-6 overflow-y-auto max-h-screen sm:px-6 lg:px-10 lg:py-8 lg:pt-8">
+      <main className="flex-1 max-h-screen min-w-0 px-4 pt-20 pb-6 overflow-y-auto sm:px-6 lg:px-10 lg:py-8 lg:pt-8">
         <Outlet />
       </main>
     </div>

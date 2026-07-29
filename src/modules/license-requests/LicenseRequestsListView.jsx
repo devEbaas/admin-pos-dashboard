@@ -20,10 +20,11 @@ function relativeTime(dateString) {
   return `hace ${Math.floor(hours / 24)} d`;
 }
 
-// Bandeja de solicitudes de licencia enviadas por instalaciones de escritorio
-// ya emparejadas (POST /devices/license/request) — no confundir con el tab
-// "Licencias" del detalle de negocio, que en realidad lista Device (pairing),
-// no este modelo License nuevo.
+// Bandeja de solicitudes de licencia enviadas por instalaciones ya
+// emparejadas (escritorio o mobile — ver el emoji de platform en la columna
+// "Dispositivo") vía POST /devices/license/request — no confundir con el
+// tab "Licencias" del detalle de negocio, que en realidad lista Device
+// (pairing), no este modelo License nuevo.
 export default function LicenseRequestsListView() {
   const { call } = useAuth();
   const [requests, setRequests] = useState(null);
@@ -77,7 +78,7 @@ export default function LicenseRequestsListView() {
             Solicitudes de licencia
           </div>
           <div className="mt-1 text-[13.5px] text-text-muted">
-            Activaciones pedidas desde instalaciones de escritorio ya emparejadas
+            Activaciones pedidas desde instalaciones (escritorio o móvil) ya emparejadas
           </div>
         </div>
         <button
