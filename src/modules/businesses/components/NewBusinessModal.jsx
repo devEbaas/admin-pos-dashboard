@@ -11,6 +11,17 @@ function slugify(value) {
     .replace(/(^-|-$)/g, "");
 }
 
+// Mismo esquema que generateTempPassword() en el backend
+// (common/crypto.util.ts: randomBytes(9).toString('base64url')) para que
+// una contraseña generada acá tenga la misma pinta que una autogenerada.
+function generatePassword() {
+  const bytes = crypto.getRandomValues(new Uint8Array(9));
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
 const inputClass =
   "px-2.5 py-2.5 text-[13.5px] rounded-[7px] bg-surface-2 border border-border-strong text-text-primary outline-none focus:border-accent";
 const labelClass = "text-[11.5px] font-semibold text-text-secondary";
@@ -23,6 +34,8 @@ export function NewBusinessModal({ onClose, onCreated }) {
   const [ownerName, setOwnerName] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [created, setCreated] = useState(null); // { business, owner }
@@ -36,11 +49,18 @@ export function NewBusinessModal({ onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (password.trim() && password.trim().length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
     setSaving(true);
     try {
       const result = await call("/admin/businesses", {
         method: "POST",
-        body: { name, slug, ownerName, ownerEmail, ownerPhone },
+        body: {
+          name, slug, ownerName, ownerEmail, ownerPhone,
+          ...(password.trim() ? { password: password.trim() } : {}),
+        },
       });
       setCreated(result);
     } catch (err) {
@@ -50,10 +70,15 @@ export function NewBusinessModal({ onClose, onCreated }) {
     }
   };
 
+  // Si se capturó una contraseña propia, el backend no la devuelve en la
+  // respuesta (solo autogeneradas se devuelven una vez) — ya la tenemos
+  // localmente, así que se usa como respaldo.
+  const ownerPassword = created?.owner?.temporaryPassword ?? password.trim();
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `Usuario: ${created.owner.username}\nContraseña: ${created.owner.temporaryPassword}`,
+        `Usuario: ${created.owner.username}\nContraseña: ${ownerPassword}`,
       );
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -72,6 +97,7 @@ export function NewBusinessModal({ onClose, onCreated }) {
         <form
           onSubmit={handleSubmit}
           onClick={(e) => e.stopPropagation()}
+          autoComplete="off"
           className="w-full max-w-[440px] max-h-[90vh] overflow-y-auto bg-surface border border-border-strong rounded-2xl p-6 sm:p-7 animate-[scaleIn_0.25s_ease]"
         >
           <div className="mb-1 text-[17px] font-bold text-text-primary">Nueva tienda</div>
@@ -85,7 +111,8 @@ export function NewBusinessModal({ onClose, onCreated }) {
             <div className="flex flex-col gap-1.5">
               <label className={labelClass}>Nombre del negocio</label>
               <input
-                type="text" required autoFocus value={name}
+                type="text" name="businessName" autoComplete="off"
+                required autoFocus value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
                 placeholder="Café Aurora" className={inputClass}
               />
@@ -94,7 +121,8 @@ export function NewBusinessModal({ onClose, onCreated }) {
               <div className="flex flex-col flex-1 gap-1.5">
                 <label className={labelClass}>Slug</label>
                 <input
-                  type="text" required value={slug}
+                  type="text" name="businessSlug" autoComplete="off"
+                  required value={slug}
                   onChange={(e) => { setSlugTouched(true); setSlug(e.target.value); }}
                   className={`${inputClass} font-mono text-accent-text`}
                 />
@@ -103,7 +131,8 @@ export function NewBusinessModal({ onClose, onCreated }) {
             <div className="flex flex-col gap-1.5">
               <label className={labelClass}>Nombre del dueño</label>
               <input
-                type="text" required value={ownerName}
+                type="text" name="ownerName" autoComplete="off"
+                required value={ownerName}
                 onChange={(e) => setOwnerName(e.target.value)}
                 placeholder="Marisol Iglesias" className={inputClass}
               />
@@ -112,7 +141,8 @@ export function NewBusinessModal({ onClose, onCreated }) {
               <div className="flex flex-col flex-1 gap-1.5">
                 <label className={labelClass}>Correo</label>
                 <input
-                  type="email" required value={ownerEmail}
+                  type="email" name="ownerEmail" autoComplete="off"
+                  required value={ownerEmail}
                   onChange={(e) => setOwnerEmail(e.target.value)}
                   className={inputClass}
                 />
@@ -120,10 +150,39 @@ export function NewBusinessModal({ onClose, onCreated }) {
               <div className="flex flex-col flex-1 gap-1.5">
                 <label className={labelClass}>Teléfono móvil</label>
                 <input
-                  type="tel" required value={ownerPhone}
+                  type="tel" name="ownerPhone" autoComplete="off"
+                  required value={ownerPhone}
                   onChange={(e) => setOwnerPhone(e.target.value)}
                   className={inputClass}
                 />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className={labelClass}>Contraseña del administrador</label>
+              <div className="flex gap-2">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="ownerPassword" autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Déjalo vacío para generarla automáticamente"
+                  minLength={6}
+                  className={`${inputClass} flex-1 font-mono`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="px-2.5 text-[12px] font-semibold rounded-[7px] bg-neutral-soft text-text-secondary hover:brightness-125 transition-all"
+                >
+                  {showPassword ? "Ocultar" : "Ver"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setPassword(generatePassword()); setShowPassword(true); }}
+                  className="px-2.5 text-[12px] font-semibold rounded-[7px] bg-neutral-soft text-text-secondary hover:brightness-125 transition-all"
+                >
+                  Generar
+                </button>
               </div>
             </div>
           </div>
@@ -164,7 +223,7 @@ export function NewBusinessModal({ onClose, onCreated }) {
             <div>
               <div className="text-[11px] text-text-muted">Contraseña</div>
               <div className="font-mono text-[15px] font-bold tracking-wide text-text-primary">
-                {created.owner.temporaryPassword}
+                {ownerPassword}
               </div>
             </div>
           </div>
