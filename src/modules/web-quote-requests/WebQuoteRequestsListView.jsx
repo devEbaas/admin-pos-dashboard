@@ -51,6 +51,21 @@ export default function WebQuoteRequestsListView() {
     }
   };
 
+  // La mayoría confirma por WhatsApp o en persona, no por el formulario —
+  // este estado es independiente de "contactada" y lo activa el admin a
+  // mano.
+  const handleMarkConfirmed = async (request) => {
+    setActingId(request.id);
+    try {
+      await call(`/admin/web-quote-requests/${request.id}/confirmed`, { method: "POST" });
+      await load();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActingId(null);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center">
@@ -88,7 +103,7 @@ export default function WebQuoteRequestsListView() {
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-border-soft">
-                  {["Nombre", "Contacto", "Código", "Mensaje", "Enviada", "Estado", ""].map((h) => (
+                  {["Nombre", "Contacto", "Código", "Mensaje", "Enviada", "Estado", "Acciones"].map((h) => (
                     <th
                       key={h}
                       className="px-5 py-3 text-[11.5px] font-semibold tracking-wider text-left uppercase text-text-muted whitespace-nowrap"
@@ -117,20 +132,34 @@ export default function WebQuoteRequestsListView() {
                       {relativeTime(r.createdAt)}
                     </td>
                     <td className="px-5 py-3.5">
-                      <Badge variant={r.contacted ? "success" : "accent"}>
-                        {r.contacted ? "Contactada" : "Pendiente"}
-                      </Badge>
+                      <div className="flex flex-col items-start gap-1.5">
+                        <Badge variant={r.contacted ? "success" : "accent"}>
+                          {r.contacted ? "Contactada" : "Pendiente"}
+                        </Badge>
+                        {r.confirmed && <Badge variant="success">Confirmada</Badge>}
+                      </div>
                     </td>
                     <td className="px-5 py-3.5 text-right">
-                      {!r.contacted && (
-                        <button
-                          onClick={() => handleMarkContacted(r)}
-                          disabled={actingId === r.id}
-                          className="px-3.5 py-1.5 text-xs font-semibold rounded-md bg-success-soft text-success hover:brightness-125 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-                        >
-                          {actingId === r.id ? "Guardando..." : "Marcar contactada"}
-                        </button>
-                      )}
+                      <div className="flex justify-end gap-2">
+                        {!r.contacted && (
+                          <button
+                            onClick={() => handleMarkContacted(r)}
+                            disabled={actingId === r.id}
+                            className="px-3.5 py-1.5 text-xs font-semibold rounded-md bg-success-soft text-success hover:brightness-125 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                          >
+                            {actingId === r.id ? "Guardando..." : "Marcar contactada"}
+                          </button>
+                        )}
+                        {!r.confirmed && (
+                          <button
+                            onClick={() => handleMarkConfirmed(r)}
+                            disabled={actingId === r.id}
+                            className="px-3.5 py-1.5 text-xs font-semibold rounded-md bg-accent-soft text-accent-text hover:brightness-125 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                          >
+                            {actingId === r.id ? "Guardando..." : "Marcar confirmada"}
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
