@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { to: "/offline-license-requests", label: "Licencias offline" },
   { to: "/generate-license", label: "Generar licencia manual" },
   { to: "/demo-requests", label: "Solicitudes de demo" },
+  { to: "/web-quote-requests", label: "Cotizaciones web" },
   { to: "/metrics", label: "Métricas" },
   { to: "/settings", label: "Configuración" },
   { to: "/admins", label: "Administradores" },

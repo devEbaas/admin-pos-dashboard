@@ -13,6 +13,7 @@ import LicenseRequestsListView from "./modules/license-requests/LicenseRequestsL
 import OfflineLicenseRequestsListView from "./modules/offline-license-requests/OfflineLicenseRequestsListView";
 import GenerateLicenseKeyView from "./modules/license-requests/GenerateLicenseKeyView";
 import DemoRequestsListView from "./modules/demo-requests/DemoRequestsListView";
+import WebQuoteRequestsListView from "./modules/web-quote-requests/WebQuoteRequestsListView";
 import AdminsView from "./modules/admins/AdminsView";
 import MetricsView from "./modules/metrics/MetricsView";
 import SettingsView from "./modules/settings/SettingsView";
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/offline-license-requests" element={<OfflineLicenseRequestsListView />} />
             <Route path="/generate-license" element={<GenerateLicenseKeyView />} />
             <Route path="/demo-requests" element={<DemoRequestsListView />} />
+            <Route path="/web-quote-requests" element={<WebQuoteRequestsListView />} />
             <Route path="/admins" element={<AdminsView />} />
             <Route path="/metrics" element={<MetricsView />} />
             <Route path="/settings" element={<SettingsView />} />
